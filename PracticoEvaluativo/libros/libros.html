@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Registro de libros</title>
+</head>
+
+<body>
+    <h2> - Registro de libros - </h2>
+    <form onsubmit="agregarlibro(); return false">
+        <input type="text" id="titulo" placeholder="titulo del libro" required>
+        <input type="text" id="autor" placeholder="autor del libro" required>
+        <input type="number" id="anio" placeholder="Año del libro" required>
+        <input type="text" id="genero" placeholder="Genero del  libro" required>
+        <label>
+        <input type="checkbox" name="leido" id="leido" />
+            ¿Leído?
+        </label><br />
+
+        <button id="buttonForm" type="submit">Agregar libro</button>
+    </form>
+    <br>
+    <h4>Filtrar libros</h4>
+    <input type="text" id="busqueda" placeholder="Buscar titulo..." oninput="filtrarlibros()">
+    <br>
+    <h4>Filtrar libros por selector de titulo</h4>
+    <select id="filtrotitulo" onchange="filtrarlibros()">
+        <option value="todas">Todas</option>
+    </select>
+    <br>
+    <h4>Filtrar por estado de lectura</h4>
+    <select id="filtroLeido" onchange="filtrarlibros()">
+        <option value="todos">Todos</option>
+        <option value="leidos">Leídos</option>
+        <option value="no-leidos">No leídos</option>
+    </select>
+    <br>
+    <br>
+    <button onclick="ordenarPorAnio()">Ordenar libros por año</button>
+    <table border="1" id="tablalibros">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>titulo</th>
+                <th>autor</th>
+                <th>Año</th>
+                <th>Genero</th>
+                <th>¿Leído?</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h3>Resumen de libros</h3>
+    <div id="resumenlibros"></div>
+
+    <script src="js/libros.js"></script>
+</body>
+
+</html>
