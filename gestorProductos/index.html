@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/layout.css" />
     <title>Gestor de Productos</title>
 </head>
 <body>
-    <h2> Gestor de Productos</h2>
+    <h2> Gestor de Productos</h2>   
         <form onsubmit=" agregarProducto(); return false">
         <input type="text" id="nombre" placeholder="Nombre del Producto" required>
         <input type="text" id="categoria" placeholder="Categoria del Producto" required>
@@ -14,6 +18,9 @@
         <button type="submit"> Agregar Producto</button> 
 
     </form>
+    <br>
+    <h3> Filtrar producto</h3>
+    <input type="text" id="busqueda" placeholder="buscar acá..." oninput="filtrarProductos()">
     <br>
     <table border="1" id="tablaProductos">
         <thead>
@@ -30,7 +37,9 @@
         </tbody>
     </table>
     <h3 id="totalAcumulado">Total: $0.00</h3>
-
+    <br>
+    <h3> Resumen de Productos</h3>
+    <div id="resumenProductos"></div>
     <button onclick="calcularTotal()">Calcular total</button>
     <script src="productos.js"></script>
 </body>
