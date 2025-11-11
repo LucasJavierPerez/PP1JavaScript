@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Semáforo React</title>
+    <style>
+      :root {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #root {
+        width: 100%;
+      }
+
+      .app {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
+      }
+
+      .traffic-light {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 6px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 35px rgba(0, 0, 0, 0.5);
+        transition: background-color 250ms ease;
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      button {
+        cursor: pointer;
+        border: none;
+        border-radius: 999px;
+        padding: 0.65rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0f172a;
+        transition: transform 150ms ease, opacity 150ms ease;
+      }
+
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      button:not(:disabled):hover {
+        transform: translateY(-2px);
+      }
+
+      .auto-toggle {
+        background: #fbbf24;
+      }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/javascript">
+      const { useState, useEffect } = React;
+
+      const COLORS = [
+        { id: 'red', label: 'Rojo', hex: '#ef4444' },
+        { id: 'yellow', label: 'Amarillo', hex: '#facc15' },
+        { id: 'green', label: 'Verde', hex: '#22c55e' },
+      ];
+
+      function TrafficLight() {
+        const [currentColor, setCurrentColor] = useState(COLORS[0].id);
+        const [autoMode, setAutoMode] = useState(false);
+
+        useEffect(() => {
+          if (!autoMode) return;
+
+          const interval = setInterval(() => {
+            setCurrentColor((prev) => {
+              const currentIndex = COLORS.findIndex((color) => color.id === prev);
+              const nextIndex = (currentIndex + 1) % COLORS.length;
+              return COLORS[nextIndex].id;
+            });
+          }, 1500);
+
+          return () => clearInterval(interval);
+        }, [autoMode]);
+
+        const handleManualChange = (colorId) => {
+          setAutoMode(false);
+          setCurrentColor(colorId);
+        };
+
+        const activeColor = COLORS.find((color) => color.id === currentColor);
+
+        return (
+          React.createElement('div', { className: 'app' },
+            React.createElement('h1', null, 'Semáforo React'),
+            React.createElement('div', {
+              className: 'traffic-light',
+              style: { backgroundColor: activeColor.hex }
+            }),
+            React.createElement('div', { className: 'buttons' },
+              COLORS.map((color) => (
+                React.createElement('button', {
+                  key: color.id,
+                  onClick: () => handleManualChange(color.id),
+                  disabled: color.id === currentColor,
+                  style: { backgroundColor: color.hex }
+                }, color.label)
+              ))
+            ),
+            React.createElement('button', {
+              className: 'auto-toggle',
+              onClick: () => setAutoMode((prev) => !prev)
+            }, autoMode ? 'Detener ciclo automático' : 'Iniciar ciclo automático')
+          )
+        );
+      }
+
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(React.createElement(TrafficLight));
+    </script>
+  </body>
+</html>
